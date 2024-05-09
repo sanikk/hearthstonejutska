@@ -3,7 +3,7 @@ import time
 from pathlib import Path
 
 
-class LogFileReader:
+class LogReader:
     """
     Tämä toimii koska se ei varaa tuota tiedostoa.
 
