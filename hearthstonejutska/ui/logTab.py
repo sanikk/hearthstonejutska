@@ -1,3 +1,4 @@
+import queue
 import tkinter
 from tkinter.ttk import Frame, Label, Button, LabelFrame
 from tkinter.filedialog import askdirectory
