@@ -11,12 +11,12 @@ class LogPathTab:
         self.log_path_label = None
         self.log_subdir_label = None
 
-        self.get_log_path_box(master=self._frame).grid(row=1, column=0)
+        self._get_log_path_box(master=self._frame).grid(row=1, column=0)
 
         self.output_box = tkinter.Text(master=self._frame)
         self.output_box.grid(row=2, column=0)
 
-    def get_log_path_box(self, master=None):
+    def _get_log_path_box(self, master=None):
         container = LabelFrame(master=master)
         self.log_path_label = Label(master=container, text=self._log_service.get_log_path())
         self.log_path_label.grid(row=0, column=0)
