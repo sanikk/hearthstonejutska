@@ -1,5 +1,7 @@
 import json
 from pathlib import Path
+from queue import Queue, Empty
+
 from config import LOG_PATH
 
 from log_modules.dir_monitor import DirectoryMonitor
@@ -7,13 +9,34 @@ from log_modules.dir_monitor import DirectoryMonitor
 
 class LogService:
     def __init__(self, log_path: Path = None):
+        self.data_queue = Queue()
         self._log_path = log_path or LOG_PATH
         self._log_subdir = None
         self._log_file = None
         self._set_subdir()
 
-        self.output_box = None
         self.monitor = None
+
+    # DIR_MONITOR/LOG_READER
+    def _start_monitor(self):
+        self.monitor = DirectoryMonitor(directory_path=self._log_subdir, data_queue=self.data_queue)
+        self.monitor.run()
+
+    def add_content(self, content):
+        print(f"log_service {content=}")
+        # self.syncqueue.put(content)
+        # notify gui there is shit to get.
+
+    def fetch(self):
+        try:
+            content = self.data_queue.get(block=False)
+            print(f"log_service {content=}")
+            if content:
+                return content
+        except Empty:
+            pass
+
+        return None
 
     # LOG FILE/SUBDIR/PATH
     def _set_file(self):
@@ -47,12 +70,3 @@ class LogService:
             return True
         return False
 
-    # DIR_MONITOR/LOG_READER
-    def _start_monitor(self):
-        self.monitor = DirectoryMonitor(directory_path=self._log_subdir, log_service=self)
-        self.monitor.run()
-
-    def add_content(self, content):
-        print(f"log_service {content=}")
-        # self.syncqueue.put(content)
-        # notify gui there is shit to get.

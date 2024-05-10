@@ -7,15 +7,15 @@ from log_modules.log_reader import LogReader
 
 class DirectoryMonitor:
 
-    def __init__(self, directory_path, log_service=None, log_reader=None):
+    def __init__(self, directory_path, log_reader=None, data_queue=None):
         self.observer = Observer()
         self.directory_path = directory_path
-        self.log_service = log_service
+        self.data_queue = data_queue
         self.log_reader = log_reader or LogReader(logfile_path=Path(directory_path, 'Hearthstone.log'))
 
     def run(self):
         self.observer.schedule(
-            event_handler=Handler(log_reader=self.log_reader, log_service=self.log_service),
+            event_handler=Handler(log_reader=self.log_reader, data_queue=self.data_queue),
             path=self.directory_path
         )
         self.observer.start()
@@ -25,10 +25,12 @@ class DirectoryMonitor:
 
 
 class Handler(FileSystemEventHandler):
-    def __init__(self, log_reader=None, log_service=None):
+    # def __init__(self, log_reader=None, log_service=None):
+    def __init__(self, log_reader=None, data_queue=None):
         super().__init__()
         self.log_reader = log_reader
-        self.log_service = log_service
+        # self.log_service = log_service
+        self.data_queue = data_queue
 
     def on_modified(self, event) -> None:
         if event.is_directory:
@@ -38,7 +40,9 @@ class Handler(FileSystemEventHandler):
             content = self.log_reader.read_log()
             if content:
                 # this should be sync/async and threadsafe
-                self.log_service.add_content(content=content)
+                # self.log_service.add_content(content=content)
+                print("dir_monitor Handler has content!!")
+                self.data_queue.put(content)
 
 
 if __name__ == '__main__':

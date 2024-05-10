@@ -8,6 +8,7 @@ class UI:
         self.frame = Tk()
         self.frame.geometry("800x600")
         self.log_tab = None
+        self.log_service = log_service
 
         self._menu = self.get_menu_bar(master=self.frame, log_service=log_service)
         self._menu.grid(row=0, column=0)

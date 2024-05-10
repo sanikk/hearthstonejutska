@@ -24,6 +24,8 @@ class LogReader:
             if self.logfile_path.stat().st_size != self.last_position:
                 logfile.seek(self.last_position)
                 content = logfile.read().splitlines()
-                print(f"log_reader {content=}")
+                if content:
+                    print("log_reader has content!!")
+                # print(f"log_reader {content=}")
                 self.last_position = self.logfile_path.stat().st_size
                 return [line for line in content if line.startswith('E')]
