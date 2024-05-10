@@ -22,11 +22,6 @@ class LogService:
         self.monitor = DirectoryMonitor(directory_path=self._log_subdir, data_queue=self.data_queue)
         self.monitor.run()
 
-    def add_content(self, content):
-        print(f"log_service {content=}")
-        # self.syncqueue.put(content)
-        # notify gui there is shit to get.
-
     def fetch(self):
         try:
             content = self.data_queue.get(block=False)

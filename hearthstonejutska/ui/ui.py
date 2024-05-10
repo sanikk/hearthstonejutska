@@ -1,3 +1,4 @@
+from doctest import debug
 from tkinter import Tk
 from tkinter.ttk import Notebook
 from ui.logTab import LogPathTab
