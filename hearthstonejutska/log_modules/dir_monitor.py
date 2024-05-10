@@ -11,6 +11,7 @@ class DirectoryMonitor:
         self.observer = Observer()
         self.directory_path = directory_path
         self.data_queue = data_queue
+        # TODO fix this. we have better logs now.
         self.log_reader = log_reader or LogReader(logfile_path=Path(directory_path, 'Hearthstone.log'))
 
     def run(self):
@@ -25,11 +26,9 @@ class DirectoryMonitor:
 
 
 class Handler(FileSystemEventHandler):
-    # def __init__(self, log_reader=None, log_service=None):
     def __init__(self, log_reader=None, data_queue=None):
         super().__init__()
         self.log_reader = log_reader
-        # self.log_service = log_service
         self.data_queue = data_queue
 
     def on_modified(self, event) -> None:
@@ -39,9 +38,8 @@ class Handler(FileSystemEventHandler):
         if 'Hearthstone.log' in event.src_path:
             content = self.log_reader.read_log()
             if content:
-                # this should be sync/async and threadsafe
+                # this should be made sync/async and threadsafe
                 # self.log_service.add_content(content=content)
-                print("dir_monitor Handler has content!!")
                 self.data_queue.put(content)
 
 

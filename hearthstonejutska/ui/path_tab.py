@@ -14,20 +14,24 @@ class PathTab:
     def _get_log_path_box(self, master=None):
         container = LabelFrame(master=master)
 
+        path_title_label = Label(master=container, text='Log path')
         self.log_path_label = Label(master=container, text=self._path_service.get_log_path())
         log_path_dialog_button = Button(master=container, text='set path', command=self._log_path_dialog)
         log_path_save_button = Button(master=container, text='save path', command=self._path_service.save_log_path)
 
-        Label(master=container, text='Log path').grid(row=0, column=0)
+        path_title_label.grid(row=0, column=0, sticky='ew')
         self.log_path_label.grid(row=0, column=1)
-        log_path_dialog_button.grid(row=0, column=2)
-        log_path_save_button.grid(row=0, column=3)
+        log_path_dialog_button.grid(row=0, column=2, sticky='ew')
+        log_path_save_button.grid(row=0, column=3, sticky='ew')
 
+        subdir_title_label = Label(master=container, text='Used subdir')
         self.log_subdir_label = Label(master=container, text=self._path_service.get_subdir())
-        Label(master=container, text='Used log subdir').grid(row=1, column=0)
-        self.log_subdir_label.grid(row=1, column=1)
         subdir_reset_button = Button(master=container, text='reset subdir', command=self._set_subdir())
-        subdir_reset_button.grid(row=1, column=2)
+
+        subdir_title_label.grid(row=1, column=0, sticky='ew')
+        self.log_subdir_label.grid(row=1, column=1)
+        subdir_reset_button.grid(row=1, column=2, sticky='ew')
+
         return container
 
     def _log_path_dialog(self):

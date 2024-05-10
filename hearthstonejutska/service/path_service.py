@@ -5,16 +5,20 @@ from config import LOG_PATH
 
 
 class PathService:
-    def __init__(self, log_path=None):
+    def __init__(self, log_path=None, log_service=None):
+        self._log_service = log_service
+
+        # we could store these always as Path ?
         self._log_path = log_path or LOG_PATH
         self._log_subdir = None
         self._log_file = None
+
         self.set_subdir()
 
     def set_subdir(self):
         if not self._log_path or not self._log_path.is_dir():
             return False
-        self._log_subdir = str(sorted(self._log_path.iterdir())[-1]).split('Hearthstone/Logs')[1]
+        self._log_subdir = str(sorted(self._log_path.iterdir())[-1]).split('Hearthstone/Logs/')[1]
 
     def get_subdir(self):
         return self._log_subdir
