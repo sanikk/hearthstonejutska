@@ -38,7 +38,7 @@ class LogPathTab:
         return container
 
     def _log_path_dialog(self):
-        answer = askdirectory(mustexist=True, parent=self._frame)
+        answer = askdirectory(mustexist=True, parent=self._frame, initialdir=self._log_service.get_log_path() or '.')
         if answer and self._log_service.set_log_path(answer):
             self.log_path_label.config(text=str(answer))
             self.start_updater()
